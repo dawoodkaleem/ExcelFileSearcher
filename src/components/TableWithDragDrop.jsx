@@ -1,4 +1,4 @@
-import { useTable, useRowSelect, useDrag, useDrop } from "react-table";
+import { useTable, useRowSelect } from "react-table";
 
 function TableWithDragDrop({ columns, data }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -13,7 +13,7 @@ function TableWithDragDrop({ columns, data }) {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => {
-              // Destructure 'key' and pass it separately
+              // Destructure 'key' and pass it explicitly
               const { key, ...restProps } = column.getHeaderProps();
               return (
                 <th
@@ -30,15 +30,16 @@ function TableWithDragDrop({ columns, data }) {
       <tbody {...getTableBodyProps()}>
         {rows.map((row) => {
           prepareRow(row);
+          // Destructure 'key' and pass it explicitly for <tr>
+          const { key, ...restProps } = row.getRowProps();
           return (
-            <tr {...row.getRowProps()}>
+            <tr key={key} {...restProps}>
               {row.cells.map((cell) => {
-                // Destructure 'key' and pass it separately
-                const { key, ...restProps } = cell.getCellProps();
+                const { key: cellKey, ...cellRestProps } = cell.getCellProps();
                 return (
                   <td
-                    key={key}
-                    {...restProps}
+                    key={cellKey}
+                    {...cellRestProps}
                     className="p-4 border-b border-gray-700">
                     {cell.render("Cell")}
                   </td>
