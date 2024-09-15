@@ -1,19 +1,54 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import FileUploadAndSearch from "./components/FileUploadAndSearch";
 import TableWithDragDrop from "./components/TableWithDragDrop";
 
 function App() {
   const [data, setData] = useState([]);
 
+  // Define column headers to match the Excel file's field names
   const columns = useMemo(
-    () =>
-      data.length > 0
-        ? Object.keys(data[0]).map((key) => ({
-            Header: key,
-            accessor: key,
-          }))
-        : [],
-    [data]
+    () => [
+      {
+        Header: "Project Name",
+        accessor: "Project Name", // Exact name from Excel
+      },
+      {
+        Header: "Task Name",
+        accessor: "Task Name", // Exact name from Excel
+      },
+      {
+        Header: "Assigned to",
+        accessor: "Assigned to", // Exact name from Excel
+      },
+      {
+        Header: "Start Date",
+        accessor: "Start Date", // Exact name from Excel
+      },
+      {
+        Header: "Days Required",
+        accessor: "Days Required ",
+        // Exact name from Excel
+      },
+      {
+        Header: "End Date",
+        accessor: "End Date", // Exact name from Excel
+      },
+      {
+        Header: "Progress",
+        accessor: "Progress", // Exact name from Excel
+      },
+    ],
+    []
+  );
+
+  useEffect(
+    () => {
+      if (data.length > 0) {
+        console.log(Object.keys(data, "Helllllllllllo")); // This will log all the keys in the first row of the Excel sheet
+      }
+    },
+    [data],
+    [columns]
   );
 
   return (
