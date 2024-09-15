@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useMemo } from "react";
+import FileUploadAndSearch from "./components/FileUploadAndSearch";
+import TableWithDragDrop from "./components/TableWithDragDrop";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState([]);
+
+  const columns = useMemo(
+    () =>
+      data.length > 0
+        ? Object.keys(data[0]).map((key) => ({
+            Header: key,
+            accessor: key,
+          }))
+        : [],
+    [data]
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="container mx-auto p-6 bg-purple-100 min-h-screen">
+      <h1 className="text-2xl font-bold text-purple-700 mb-6">
+        Excel File Reader
+      </h1>
+      <FileUploadAndSearch setData={setData} />
+      {data.length > 0 && (
+        <div className="mt-6">
+          <TableWithDragDrop columns={columns} data={data} />
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
